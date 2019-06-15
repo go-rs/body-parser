@@ -16,8 +16,7 @@ func main() {
 	api.Use(bodyparser.Load())
 
 	api.All("/", func(ctx *rest.Context) {
-		body, _ := ctx.Get("body")
-		ctx.JSON(body)
+		ctx.JSON(ctx.Body)
 	})
 
 	fmt.Println("Starting server.")

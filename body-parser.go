@@ -72,6 +72,6 @@ func Load() rest.Handler {
 			body = parseFormData(ctx.Request.PostForm)
 		}
 
-		ctx.Set("body", body)
+		ctx.Body = body
 	}
 }
