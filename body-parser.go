@@ -7,12 +7,12 @@ package bodyparser
 
 import (
 	"encoding/json"
+	"errors"
 	"net/url"
 	"regexp"
 	"strings"
 
 	"github.com/go-rs/rest-api-framework"
-	"github.com/pkg/errors"
 )
 
 /**
