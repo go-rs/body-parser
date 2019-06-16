@@ -8,6 +8,6 @@ api.Use(bodyparser.Load())
 
 
 // To get body
-ctx.Get("body")
+ctx.Body
 
 ```
