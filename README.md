@@ -10,7 +10,7 @@ api.Use(bodyparser.JSON())
 // To get body
 ctx.Body
 
-// cast
+// cast 
 body := ctx.Body.(*orderedjson.OrderedMap)
 
 ```
