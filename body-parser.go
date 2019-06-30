@@ -12,20 +12,22 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/go-rs/ordered-json"
 	"github.com/go-rs/rest-api-framework"
 )
 
 /**
  * Basic level form data parsing
  */
-func parseFormData(data url.Values) (body map[string]interface{}) {
+func parseFormData(data url.Values) (body *orderedjson.OrderedMap) {
+	//TODO: extended parsing
 	if len(data) > 0 {
-		body = make(map[string]interface{}, 0)
+		body := orderedjson.NewOrderedMap()
 		for key, val := range data {
 			if len(val) > 1 {
-				body[key] = val
+				body.Set(key, val)
 			} else {
-				body[key] = data.Get(key)
+				body.Set(key, data.Get(key))
 			}
 		}
 	}
@@ -35,7 +37,7 @@ func parseFormData(data url.Values) (body map[string]interface{}) {
 /**
  * Body Parser
  */
-func Load() rest.Handler {
+func JSON() rest.Handler {
 
 	formHeader := regexp.MustCompile(`^multipart/form-data`)
 
@@ -46,7 +48,7 @@ func Load() rest.Handler {
 
 		contentType := strings.ToLower(ctx.Request.Header.Get("content-type"))
 
-		var body map[string]interface{}
+		var body = orderedjson.NewOrderedMap()
 
 		if contentType == "application/json" {
 			err := json.NewDecoder(ctx.Request.Body).Decode(&body)
@@ -71,7 +73,6 @@ func Load() rest.Handler {
 
 			body = parseFormData(ctx.Request.PostForm)
 		}
-
 		ctx.Body = body
 	}
 }

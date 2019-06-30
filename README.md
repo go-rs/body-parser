@@ -4,10 +4,13 @@
 ```
 var api rest.API
 
-api.Use(bodyparser.Load())
+api.Use(bodyparser.JSON())
 
 
 // To get body
-ctx.Get("body")
+ctx.Body
+
+// cast
+body := ctx.Body.(*orderedjson.OrderedMap)
 
 ```
