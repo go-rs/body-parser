@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	bodyparser "github.com/go-rs/body-parser"
-	orderedjson "github.com/go-rs/ordered-json"
 
 	"github.com/go-rs/rest-api-framework"
 )
@@ -14,16 +13,15 @@ func main() {
 	var api rest.API
 
 	// request interceptor / middleware
-	api.Use(bodyparser.JSON())
+	api.Use(bodyparser.JSON(2000))
 
 	api.All("/", func(ctx *rest.Context) {
-		//prettyBytes, _ := json.Marshal(ctx.Body)
-		//ctx.SetHeader("content-type", "application/json")
-		//ctx.Write(prettyBytes)
-
-		body := ctx.Body.(*orderedjson.OrderedMap)
-
+		body := ctx.Body
 		ctx.JSON(body)
+	})
+
+	api.OnErrors([]string{bodyparser.ErrCodeMalformedBody, bodyparser.ErrCodeFormParse, bodyparser.ErrCodeMultiformParse}, func(ctx *rest.Context) {
+		ctx.Status(400).JSON(`{"message": "Malformed body"}`)
 	})
 
 	fmt.Println("Starting server.")

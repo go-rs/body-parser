@@ -2,15 +2,12 @@
 
 ## How to use?
 ```
-var api rest.API
+var api = rest.New("/")
 
-api.Use(bodyparser.JSON())
+api.Use(bodyparser.JSON(memorySize int64))
 
 
 // To get body
 ctx.Body
-
-// cast 
-body := ctx.Body.(*orderedjson.OrderedMap)
 
 ```
